@@ -94,27 +94,27 @@ public static unsafe class ZfpNative
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static uint Compress(FieldType type, void* dataPtr, nuint length, Span<byte> output, double? tolerance = null)
     {
-        var field = ZfpField1d(new UIntPtr(dataPtr), type, length);
-        var zfpStream = ZfpStreamOpen(UIntPtr.Zero);
+        var field = zfp_field_1d(new UIntPtr(dataPtr), type, length);
+        var zfpStream = zfp_stream_open(UIntPtr.Zero);
 
         if (tolerance.HasValue)
-            ZfpStreamSetAccuracy(zfpStream, tolerance.Value);
+            zfp_stream_set_accuracy(zfpStream, tolerance.Value);
         else
-            SetReversible(zfpStream);
+            zfp_stream_set_reversible(zfpStream);
 
         fixed (void* outputPtr = output)
         {
             var fieldPtr = new UIntPtr(field);
-            var stream = StreamOpen(outputPtr, (nuint)output.Length);
-            SetBitStream(zfpStream, stream);
-            RewindStream(zfpStream);
+            var stream = stream_open(outputPtr, (nuint)output.Length);
+            zfp_stream_set_bit_stream(zfpStream, stream);
+            zfp_stream_rewind(zfpStream);
 
-            WriteHeader(zfpStream, fieldPtr, HeaderMask);
-            var size = Compress(zfpStream, fieldPtr);
+            zfp_write_header(zfpStream, fieldPtr, HeaderMask);
+            var size = zfp_compress(zfpStream, fieldPtr);
 
-            FreeField(field);
-            ZfpStreamClose(zfpStream);
-            StreamClose(stream);
+            zfp_field_free(field);
+            zfp_stream_close(zfpStream);
+            stream_close(stream);
 
             return (uint)size;
         }
@@ -146,27 +146,27 @@ public static unsafe class ZfpNative
     {
         fixed (void* dataPtr = compressedStream)
         {
-            var zfpStream = ZfpStreamOpen(UIntPtr.Zero);
+            var zfpStream = zfp_stream_open(UIntPtr.Zero);
 
             fixed (void* outputPtr = output)
             {
-                var field = ZfpField1d(new UIntPtr(outputPtr), FieldType.None, 0);
-                var stream = StreamOpen(dataPtr, (nuint)output.Length);
-                SetBitStream(zfpStream, stream);
-                RewindStream(zfpStream);
+                var field = zfp_field_1d(new UIntPtr(outputPtr), FieldType.None, 0);
+                var stream = stream_open(dataPtr, (nuint)output.Length);
+                zfp_stream_set_bit_stream(zfpStream, stream);
+                zfp_stream_rewind(zfpStream);
 
                 var fieldPtr = new UIntPtr(field);
 
-                ReadHeader(zfpStream, fieldPtr, HeaderMask); // 0x7u - full mask
+                zfp_read_header(zfpStream, fieldPtr, HeaderMask); // 0x7u - full mask
 
                 unitCount = (uint)field->Nx;
                 fieldType = field->Type;
 
-                var size = Decompress(zfpStream, fieldPtr);
+                var size = zfp_decompress(zfpStream, fieldPtr);
 
-                FreeField(field);
-                ZfpStreamClose(zfpStream);
-                StreamClose(stream);
+                zfp_field_free(field);
+                zfp_stream_close(zfpStream);
+                stream_close(stream);
 
                 return (uint)size;
             }
@@ -205,64 +205,54 @@ public static unsafe class ZfpNative
     }
 
     /*  zfp_stream_set_accuracy */
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, 
-        EntryPoint = "zfp_stream_set_accuracy")]
-    private static extern void ZfpStreamSetAccuracy(UIntPtr zfpStream, double tolerance);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern void zfp_stream_set_accuracy(UIntPtr zfpStream, double tolerance);
 
     /*  zfp compressed stream */
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
-        EntryPoint = "zfp_stream_open")]
-    private static extern UIntPtr ZfpStreamOpen(UIntPtr stream);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern UIntPtr zfp_stream_open(UIntPtr stream);
 
     /* allocate and initialize bit stream */
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "stream_open")]
-    private static extern UIntPtr StreamOpen(void* buffer, nuint bytes);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern UIntPtr stream_open(void* buffer, nuint bytes);
 
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "zfp_field_1d")]
-    private static extern Field* ZfpField1d(UIntPtr data, FieldType type, nuint size);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern Field* zfp_field_1d(UIntPtr data, FieldType type, nuint size);
 
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
-        EntryPoint = "zfp_stream_set_bit_stream")]
-    private static extern UIntPtr SetBitStream(UIntPtr zfpStream, UIntPtr bitStream);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern UIntPtr zfp_stream_set_bit_stream(UIntPtr zfpStream, UIntPtr bitStream);
 
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
-        EntryPoint = "zfp_stream_rewind")]
-    private static extern UIntPtr RewindStream(UIntPtr zfpStream);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern UIntPtr zfp_stream_rewind(UIntPtr zfpStream);
 
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "zfp_compress")]
-    private static extern nuint Compress(UIntPtr zfpStream, UIntPtr field);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern nuint zfp_compress(UIntPtr zfpStream, UIntPtr field);
 
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "zfp_decompress")]
-    private static extern nuint Decompress(UIntPtr zfpStream, UIntPtr field);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern nuint zfp_decompress(UIntPtr zfpStream, UIntPtr field);
 
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "zfp_field_free")]
-    private static extern nuint FreeField(Field* field);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern nuint zfp_field_free(Field* field);
 
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
-        EntryPoint = "zfp_stream_close")]
-    private static extern nuint ZfpStreamClose(UIntPtr field);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern nuint zfp_stream_close(UIntPtr field);
 
     /* close and deallocate bit stream */
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "stream_close")]
-    private static extern nuint StreamClose(UIntPtr field);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern nuint stream_close(UIntPtr field);
 
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
-        EntryPoint = "zfp_stream_maximum_size")]
-    private static extern nuint StreamMaximumSize(UIntPtr zfpStream, UIntPtr field);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern nuint zfp_stream_maximum_size(UIntPtr zfpStream, UIntPtr field);
 
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
-        EntryPoint = "zfp_stream_set_reversible")]
-    private static extern nuint SetReversible(UIntPtr zfpStream);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern nuint zfp_stream_set_reversible(UIntPtr zfpStream);
 
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
-        EntryPoint = "zfp_write_header")]
-    private static extern nuint WriteHeader(UIntPtr zfpStream, UIntPtr field, nuint mask);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern nuint zfp_write_header(UIntPtr zfpStream, UIntPtr field, nuint mask);
 
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
-        EntryPoint = "zfp_read_header")]
-    private static extern nuint ReadHeader(UIntPtr zfpStream, UIntPtr field, nuint mask);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern nuint zfp_read_header(UIntPtr zfpStream, UIntPtr field, nuint mask);
 
-    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
-        EntryPoint = "zfp_stream_compressed_size")]
-    private static extern nuint ZfpStreamSize(UIntPtr zfpStream);
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+    private static extern nuint zfp_stream_compressed_size(UIntPtr zfpStream);
 }
