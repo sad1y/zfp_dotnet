@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.1</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <LangVersion>10</LangVersion>
+        <RuntimeIdentifiers>win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <AssemblyName>zfp-dotnet</AssemblyName>
+        <Version>0.0.0.1</Version>
+        <Description>.NET native wrapper for the ZFP project</Description>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <!-- Native library must be in native directory -->
+        <Content Include="./runtimes/linux-x64/native/libzfp.so">
+            <PackagePath>runtimes/linux-x64/native/libzfp.so</PackagePath>
+            <Pack>true</Pack>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+<!--        <Content Include="./runtimes/macos-x64/native/libzfp.dylib">-->
+<!--            <PackagePath>runtimes/macos-x64/native/libzfp.dylib</PackagePath>-->
+<!--            <Pack>true</Pack>-->
+<!--            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
+<!--        </Content>-->
+<!--        <Content Include="./runtimes/win-x64/native/libzfp.dll">-->
+<!--            <PackagePath>runtimes/win-x64/native/libzfp.dll</PackagePath>-->
+<!--            <Pack>true</Pack>-->
+<!--            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
+<!--        </Content>-->
+    </ItemGroup>
+</Project>
