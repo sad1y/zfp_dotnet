@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZfpTests", "tests\ZfpTests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZfpDotnet", "src\ZfpDotnet\ZfpDotnet.csproj", "{4E330208-7628-4954-AAB4-1DFB9B3A81C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZfpDotnet.Runtime", "src\ZfpDotnet.Runtime\ZfpDotnet.Runtime.csproj", "{DD7E2AB1-BAAE-460A-98C6-315F3C718DC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{4E330208-7628-4954-AAB4-1DFB9B3A81C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E330208-7628-4954-AAB4-1DFB9B3A81C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E330208-7628-4954-AAB4-1DFB9B3A81C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD7E2AB1-BAAE-460A-98C6-315F3C718DC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD7E2AB1-BAAE-460A-98C6-315F3C718DC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD7E2AB1-BAAE-460A-98C6-315F3C718DC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD7E2AB1-BAAE-460A-98C6-315F3C718DC0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

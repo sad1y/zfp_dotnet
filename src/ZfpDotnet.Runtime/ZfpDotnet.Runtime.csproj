@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>netstandard1.6</TargetFramework>
+        <RuntimeIdentifiers>win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
+        <AssemblyName>zfp-dotnet-runtime</AssemblyName>
+        <!-- Nuget Properties -->
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+
+        <!-- Pack Option -->
+        <Title>zfp-dotnet-runtime 0.0.0.1</Title>
+        <PackageId>zfp-dotnet-runtime</PackageId>
+
+        <!-- Signing -->
+        <SignAssembly>false</SignAssembly>
+        <PublicSign>false</PublicSign>
+        <DelaySign>false</DelaySign>
+        <PackageVersion>0.0.0.1</PackageVersion>
+        <Authors>zoth</Authors>
+        <RootNamespace>ZfpDotnet.Native</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- Native library must be in native directory -->
+        <Content Include="./runtimes/linux-x64/native/libzfp.so">
+            <PackagePath>runtimes/linux-x64/native/libzfp.so</PackagePath>
+            <Pack>true</Pack>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+
+        <!--        <Content Include="./runtimes/osx-x64/native/libzfp.dylib">-->
+        <!--            <PackagePath>runtimes/macos-x64/native/libzfp.dylib</PackagePath>-->
+        <!--            <Pack>true</Pack>-->
+        <!--            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
+        <!--        </Content>-->
+        <!--        <Content Include="./runtimes/win-x64/native/libzfp.dll">-->
+        <!--            <PackagePath>runtimes/win-x64/native/libzfp.dll</PackagePath>-->
+        <!--            <Pack>true</Pack>-->
+        <!--            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>-->
+        <!--        </Content>-->
+    </ItemGroup>
+</Project>

@@ -205,64 +205,64 @@ public static unsafe class ZfpNative
     }
 
     /*  zfp_stream_set_accuracy */
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall,
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, 
         EntryPoint = "zfp_stream_set_accuracy")]
     private static extern void ZfpStreamSetAccuracy(UIntPtr zfpStream, double tolerance);
 
     /*  zfp compressed stream */
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall,
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
         EntryPoint = "zfp_stream_open")]
     private static extern UIntPtr ZfpStreamOpen(UIntPtr stream);
 
     /* allocate and initialize bit stream */
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "stream_open")]
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "stream_open")]
     private static extern UIntPtr StreamOpen(void* buffer, nuint bytes);
 
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "zfp_field_1d")]
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "zfp_field_1d")]
     private static extern Field* ZfpField1d(UIntPtr data, FieldType type, nuint size);
 
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall,
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
         EntryPoint = "zfp_stream_set_bit_stream")]
     private static extern UIntPtr SetBitStream(UIntPtr zfpStream, UIntPtr bitStream);
 
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall,
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
         EntryPoint = "zfp_stream_rewind")]
     private static extern UIntPtr RewindStream(UIntPtr zfpStream);
 
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "zfp_compress")]
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "zfp_compress")]
     private static extern nuint Compress(UIntPtr zfpStream, UIntPtr field);
 
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "zfp_decompress")]
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "zfp_decompress")]
     private static extern nuint Decompress(UIntPtr zfpStream, UIntPtr field);
 
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "zfp_field_free")]
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "zfp_field_free")]
     private static extern nuint FreeField(Field* field);
 
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall,
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
         EntryPoint = "zfp_stream_close")]
     private static extern nuint ZfpStreamClose(UIntPtr field);
 
     /* close and deallocate bit stream */
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "stream_close")]
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall, EntryPoint = "stream_close")]
     private static extern nuint StreamClose(UIntPtr field);
 
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall,
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
         EntryPoint = "zfp_stream_maximum_size")]
     private static extern nuint StreamMaximumSize(UIntPtr zfpStream, UIntPtr field);
 
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall,
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
         EntryPoint = "zfp_stream_set_reversible")]
     private static extern nuint SetReversible(UIntPtr zfpStream);
 
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall,
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
         EntryPoint = "zfp_write_header")]
     private static extern nuint WriteHeader(UIntPtr zfpStream, UIntPtr field, nuint mask);
 
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall,
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
         EntryPoint = "zfp_read_header")]
     private static extern nuint ReadHeader(UIntPtr zfpStream, UIntPtr field, nuint mask);
 
-    [DllImport("./runtimes/linux-x64/native/libzfp", CallingConvention = CallingConvention.StdCall,
+    [DllImport("libzfp", CallingConvention = CallingConvention.StdCall,
         EntryPoint = "zfp_stream_compressed_size")]
     private static extern nuint ZfpStreamSize(UIntPtr zfpStream);
 }
